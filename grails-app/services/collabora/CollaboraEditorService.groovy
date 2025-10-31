@@ -10,6 +10,7 @@ import grails.plugin.springsecurity.SpringSecurityService
 import grails.util.Environment
 import grails.web.api.WebAttributes
 import groovy.xml.XmlParser
+import jakarta.annotation.PostConstruct
 import org.codehaus.groovy.runtime.MethodClosure as MC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -22,7 +23,6 @@ import taack.ui.dsl.UiTableSpecifier
 import taack.ui.dsl.common.ActionIcon
 import taack.ui.dsl.common.IconStyle
 
-import javax.annotation.PostConstruct
 import java.security.SecureRandom
 
 import static taack.ui.TaackUi.createMenu
@@ -142,7 +142,7 @@ final class CollaboraEditorService implements IAttachmentCreate, IAttachmentEdit
             String serverName = webRequest.request.serverName
             int serverPort = webRequest.request.serverPort
 
-            String client = collaboraEdit[attachment.extension]
+            String client = collaboraEdit.get(attachment.extension)
             String wopiSrc
             if (Environment.current == Environment.PRODUCTION) {
                 wopiSrc = URLEncoder.encode("https://intranet3.citel.fr/wopi/files/${attachment.id}", 'UTF-8')

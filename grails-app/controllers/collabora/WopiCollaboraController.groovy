@@ -11,7 +11,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import grails.web.api.WebAttributes
 import org.codehaus.groovy.runtime.MethodClosure
 import taack.domain.TaackAttachmentService
-import taack.domain.TaackSaveService
+import taack.render.TaackSaveService
 import taack.render.TaackUiService
 import taack.ui.dsl.common.ActionIcon
 
@@ -27,8 +27,8 @@ class WopiCollaboraController implements WebAttributes {
     TaackAttachmentService taackAttachmentService
 
     def getFile() {
-        String id = params['id']
-        String accessToken = params['access_token']
+        Long id = params.long('id')
+        String accessToken = params.get('access_token')
         User u = CollaboraAccessToken.findByAccessToken(accessToken)?.baseUser
         if (u) {
             Attachment a = Attachment.read(id)
@@ -37,7 +37,7 @@ class WopiCollaboraController implements WebAttributes {
                 collaboraEditorService.getFile(u, a)
             } else {
                 log.error("Attachment is null ($id) or user has no access")
-                render status: 401, text: 'nok'
+                render(status: 401, text: 'nok')
             }
         } else {
             log.error("user is null ($accessToken")
@@ -48,8 +48,8 @@ class WopiCollaboraController implements WebAttributes {
 
     @Transactional
     def putFile() {
-        String id = params['id']
-        String accessToken = params['access_token']
+        Long id = params.long('id')
+        String accessToken = params.get('access_token')
         // ZonedDateTime lastModifiedTime = ZonedDateTime.parse(params['LastModifiedTime'].toString())
         User u = collaboraEditorService.getUserFromToken(accessToken)
         if (u) {
@@ -73,8 +73,8 @@ class WopiCollaboraController implements WebAttributes {
     }
 
     def checkFileInfo() {
-        String id = params['id']
-        String accessToken = params['access_token']
+        Long id = params.long('id')
+        String accessToken = params.get('access_token')
 
         User u = CollaboraAccessToken.findByAccessToken(accessToken)?.baseUser
         if (u) {
@@ -143,6 +143,6 @@ class WopiCollaboraController implements WebAttributes {
         if (newAttachment.hasErrors())
             log.error "${newAttachment.errors}"
         else
-            redirect controller: "attachment", action: "showAttachment", id: newAttachment.id
+            redirect(controller: 'attachment', action: 'showAttachment', id: newAttachment.id)
     }
 }

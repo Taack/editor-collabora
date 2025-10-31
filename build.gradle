@@ -1,11 +1,8 @@
 plugins {
-    id 'taack-grails-plugin'
     id 'taack-grails-assets-plugin'
 }
 
 grails {
-    // should use gradle -Dgrails.run.active=true bootRun
-    exploded = true
     plugins {
         implementation project(':crew')
     }
