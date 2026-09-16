@@ -68,14 +68,14 @@ final class CollaboraEditorService implements IAttachmentCreate, IAttachmentEdit
                         collaboraView[mAtt['ext'] as String] = mAtt['urlsrc'] as String
                     }
                 }
+                TaackAttachmentService.registerEdit(this)
+                TaackAttachmentService.registerCreate(this)
                 log.info "collaboraEdit: $collaboraEdit"
                 log.info "collaboraView: $collaboraView"
             } catch (e) {
                 log.error("${e.message}")
             }
 
-            TaackAttachmentService.registerEdit(this)
-            TaackAttachmentService.registerCreate(this)
         }
     }
 
@@ -144,11 +144,7 @@ final class CollaboraEditorService implements IAttachmentCreate, IAttachmentEdit
 
             String client = collaboraEdit.get(attachment.extension)
             String wopiSrc
-            if (Environment.current == Environment.PRODUCTION) {
-                wopiSrc = URLEncoder.encode("https://intranet3.citel.fr/wopi/files/${attachment.id}", 'UTF-8')
-            } else {
-                wopiSrc = "$scheme://$serverName:$serverPort/wopi/files/${attachment.id}"
-            }
+            wopiSrc = "$scheme://$serverName:$serverPort/wopiCollabora/getFile/${attachment.id}"
 
 
             return """\
