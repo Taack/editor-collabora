@@ -100,11 +100,11 @@ class WopiCollaboraController implements WebAttributes {
                 ]
                 render(info as JSON)
             } else {
-                log.error("Attachment is null ($id")
+                log.error("Attachment is null ($id)")
                 render 'nok'
             }
         } else {
-            log.error("user is null ($accessToken")
+            log.error("user is null ($accessToken)")
             render 'NOK'
         }
     }

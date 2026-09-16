@@ -7,13 +7,13 @@ import crew.User
 import grails.compiler.GrailsCompileStatic
 import grails.gsp.PageRenderer
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.util.Environment
 import grails.web.api.WebAttributes
 import groovy.xml.XmlParser
 import jakarta.annotation.PostConstruct
 import org.codehaus.groovy.runtime.MethodClosure as MC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.web.util.UriUtils
 import org.taack.IAttachmentCreate
 import org.taack.IAttachmentEditorIFrame
 import taack.domain.TaackAttachmentService
@@ -144,7 +144,7 @@ final class CollaboraEditorService implements IAttachmentCreate, IAttachmentEdit
 
             String client = collaboraEdit.get(attachment.extension)
             String wopiSrc
-            wopiSrc = "$scheme://$serverName:$serverPort/wopiCollabora/getFile/${attachment.id}"
+            wopiSrc = UriUtils.encodeUriVariables("$scheme://$serverName:$serverPort/noFilter/files/${attachment.id}").join('')
 
 
             return """\
